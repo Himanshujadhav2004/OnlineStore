@@ -3,6 +3,7 @@ const connectDb =require("./db/db");
 
 require("dotenv").config();
 const userRouter =require("./routers/User")
+const cors =require("cors");
 
 
 const app =express();
@@ -14,12 +15,13 @@ connectDb();
 //middleware
 //converts the json data into the javascript object
 app.use(express.json());
+app.use(cors());
 
 //users Router
 app.use("/user/api",userRouter);
 
 app.get("/",(req,res)=>{
-   return  res.send("Hi Himanshu");
+   return  res.send("Home Api");
 })
 
 //starting the backend

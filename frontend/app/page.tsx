@@ -1,15 +1,4 @@
-"use client"
-import Image from "next/image";
-import { useEffect, useState } from "react";
-
+import { redirect } from "next/navigation";
 export default function Home() {
-
-const [data,setdata] =useState({});
-
-
-  return (
-   <>
-   <p>Himanshu</p>
-   </>
-  );
+redirect("/login");
 }

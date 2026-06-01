@@ -1,0 +1,7 @@
+@import "tailwindcss";
+:root {
+  --my-custom-test: red;
+}
+body {
+  color: var(--my-custom-test);
+}
