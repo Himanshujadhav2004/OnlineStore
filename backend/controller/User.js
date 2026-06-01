@@ -30,3 +30,32 @@ return res.status(201).json({message:"user Created Successsfully"});
         console.log(err);
     }
 }
+
+exports.login = async(req,res)=>{
+
+    try{
+   const {email,password}=req.body;
+
+   const user =await UserShecma.findOne({email});
+
+   if(!user){
+    return res.status(401).json({message:"User not exist please register first"});
+   }
+
+   const hashedpass =user.password;
+
+   const pass = await bcrypt.compare(password,hashedpass);
+
+   if(!pass){
+    return res.status(401).json({message:"Password was incorrect"});
+   }
+
+const token =jwt.sign({email:user.email,name:user.name,phoneNO:user.PhoneNo,userType:user.userType},process.env.JWT_SECRET,{expiresIn:"1h"});
+return res.status(201).json({message:"user Login Successfully",token:token});
+    }
+    catch(err)
+{
+    console.log(err);
+}
+
+}
