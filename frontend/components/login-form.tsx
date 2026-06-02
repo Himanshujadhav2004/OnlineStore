@@ -1,6 +1,7 @@
 "use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { jwtDecode } from "jwt-decode"
 import {
   Card,
   CardContent,
@@ -36,6 +37,18 @@ try{
 const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user/api/login`,{email:data.email,password:data.password});
 
 console.log(response);
+//setting token
+localStorage.setItem("token",response.data.token);
+
+const token =localStorage.getItem("token");
+
+if(token){
+  const decode =jwtDecode(token);
+  console.log(decode);
+}
+
+//store the user data
+
 router.push('/dashboard')
 }
 catch(err){
@@ -65,6 +78,7 @@ catch(err){
                   required
                 />
               </Field>
+            
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
