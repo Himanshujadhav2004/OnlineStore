@@ -1,64 +1,68 @@
-"use client";
-
-import { jwtDecode } from "jwt-decode";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-
-interface DecodedToken {
-  email: string;
-  name: string;
-  phoneNO: string;
-  userType: string;
-  exp: number;
-  iat: number;
-}
+"use client"
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import { useRouter } from "next/navigation"
+import { jwtDecode } from "jwt-decode"
 
 export default function Page() {
-  const router = useRouter();
 
-  const [user, setUser] = useState<DecodedToken | null>(null);
+  const router =useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const token =localStorage.getItem("token");
 
-    if (!token) {
-      router.push("/login");
-      return;
-    }
-
-    try {
-      const decoded = jwtDecode<DecodedToken>(token);
-
-      setUser(decoded);
-    } catch (err) {
-      console.log(err);
-
-      localStorage.removeItem("token");
-
-      router.push("/login");
-    }
-  }, [router]);
-
-  if (!user) {
-    return <div>Loading...</div>;
+  if(!token){
+  router.push("/login")
+    
   }
 
-function handleLogout(){
-     localStorage.removeItem("token");
-     router.push("/login")
-}
-
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <h1>Welcome to dashboard</h1>
-
-        <p>{user.name}</p>
-        <p>{user.email}</p>
-        <p>{user.userType}</p>
-        <Button onClick={handleLogout}>Logout</Button>
-      </div>
-    </div>
-  );
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-vertical:h-4 data-vertical:self-auto"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Build Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }

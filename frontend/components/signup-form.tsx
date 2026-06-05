@@ -27,7 +27,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     phoneNO:"",
     name:"",
     confirmpassword:"",
-    userType:"admin"
+    userType:"customer"
   })
 
   const router =useRouter()
