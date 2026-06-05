@@ -21,6 +21,7 @@ import axios from "axios"
 
 import { useRouter } from "next/navigation"
 
+
 export function LoginForm({
   className,
   ...props
@@ -44,12 +45,18 @@ const token =localStorage.getItem("token");
 
 if(token){
   const decode =jwtDecode(token);
-  console.log(decode);
+  console.log(decode.userType);
+  if(decode.userType=="admin")
+  {
+    router.push('/dashboard')
+  }
+  else{
+    router.push("shop")
+  }
 }
 
-//store the user data
 
-router.push('/dashboard')
+
 }
 catch(err){
   console.log(err);
